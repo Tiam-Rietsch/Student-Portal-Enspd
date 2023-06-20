@@ -1,0 +1,281 @@
+:root {
+    --dark-blue: #21295C;
+    --pale-blue: #BFD7EA;
+    --giants-orange: #FF5714;
+    --yellow: #E0FF4F;
+    --green: #14591D;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* sizes the logo on the navbar */
+.navbar {
+    background-color: var(--dark-blue);
+}
+
+.navbar-brand {
+    color: white;
+}
+
+#home-logo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+/* sizes the student profile pic on the menubar */
+#navbar-profile-picture {
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+}
+
+/* changes the border of the hambuger menu */
+.navbar-toggler {
+    border: none;
+}
+
+/* sets a highlight color when hamburger menu is hovered */
+.navbar-toggler:hover {
+    background-color: #00000021;
+}
+
+/* remove the shadow and outline of the hamburger menu */
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none
+}
+
+/* change the background color of the side bar */
+.offcanvas {
+    background-color: var(--dark-blue);
+    color: white;
+}
+
+/* size the images on the carousel */
+.carousel-item img {
+    width: 100%;
+    min-width: 100%;
+    max-height: 80vh;
+    object-fit: cover;
+}
+
+/* change the background of the carousel image */
+.carousel-item {
+    background-color: rgba(0, 0, 0, 0.099);
+    margin-top: 65px;
+}
+
+/* change the top of the container to match the bottom of the navbar */
+.container {
+    position: absolute;
+    top: 10vh;
+    height: 90vh;
+}
+
+/*-------------------- Recent Activities Section --------------------*/
+
+.activities-section {
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.card img {
+    max-height: 20rem;
+    object-fit: fill;
+}
+
+.activities-container {
+    width: fit-content;
+}
+
+/*--------------------------------- Forms --------------------------*/
+.login-form-container,
+.signup-form-container {
+    top: 20vh;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form-container form,
+.signup-form-container form {
+    position: relative;
+    padding: 30px;
+    height: 70vh;
+    width: 40%;
+    max-width: 400px;
+    min-width: 300px;
+    background-color: #21295C;
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    -webkit-box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
+    -moz-box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
+    box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
+}
+
+.signup-form-container form {
+    height: 88vh;
+    flex-direction: row;;
+}
+
+
+.signup-form-container form .user-section,
+.signup-form-container form .profile-section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    min-width: 300px;
+    background-color: #21295C;
+    border-radius: 15px;
+    padding: 30px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    transition: left 0.4s ease;
+}
+
+
+.signup-form-container form .profile-section {
+    left: 150%;
+}
+
+.form-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.form-title img {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.form-input input,
+.form-input select {
+    background-color: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    height: 50px;
+    border-bottom: 1px solid white;
+}
+
+.form-input label {
+    top: 50%;
+    position: absolute;
+    font-size: 1rem;
+    pointer-events: none;
+    transform: translateY(-50%);
+    color: rgb(227, 220, 220);
+    transition: 0.2s ease;
+}
+
+.form-input span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    border: 2px solid #FFC107;
+    transition: width 0.5s ease;
+    visibility: hidden;
+}
+
+
+.form-input input:focus ~ label,
+.form-input input:valid ~ label,
+.form-input select:focus ~ label,
+.form-input select:valid ~ label {
+    top: 0px;
+    font-size: 1rem;
+    color: #FFC107;
+    border-bottom: none;
+}
+
+.form-input input:focus ~ span::after,
+.form-input input:valid ~ span::after,
+.form-input select:focus ~ span::after,
+.form-input select:valid ~ span::after {
+    visibility: visible;
+    width: 100%;
+}
+
+.options {
+    position: absolute;
+    top: 100%;
+    background-color: #21295C;
+    z-index: 2;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    -webkit-box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
+    -moz-box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
+    box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
+
+    border: 1px solid #FFC107
+}
+
+.options {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.options li {
+    position: relative;
+    list-style: none;
+    padding: 1em 0.5em 1em 0.5em;
+    margin: 0;
+    width: 100%;
+    cursor:pointer;
+}
+
+.options li:hover {
+    background-color: #19204f;
+    color: #FFC107;
+}
+
+.options li::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    border: none;
+    z-index: 3;
+    transition: width 0.3s ease;
+}
+
+.options li:hover::after {
+    width: 100%;
+    border: 2px solid #FFC107;
+}

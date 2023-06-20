@@ -1,0 +1,15 @@
+{% extends 'pages/base.html' %}
+
+{% block main %}
+    <div class="">
+        <section>
+            {% include 'pages/carousel.html' %}
+        </section>
+        <section class="activities-section d-flex flex-column justify-content-start align-items-center">
+            <h4 class="pt-5 mb-3 pb-2">Recent activities</h4>
+            <div class="activities-container d-flex flex-row justify-content-between flex-wrap">
+                {% include 'pages/recent_activities.html' %}
+            </div>
+        </section>
+    </div>
+{% endblock main %}
