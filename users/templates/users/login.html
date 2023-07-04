@@ -1,29 +1,41 @@
-{% extends 'pages/base.html' %}
+{% extends 'pages/ENSPD/base.html' %}
 {% load static %}
 
 {% block main %}
 <div class="container">
     <div class="login-form-container"> 
-        <form action="POST">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                    {{ message }}
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="" method="POST" autocomplete="off">
             {% csrf_token %}
-            <div class="form-title">
+            <div class="title-section">
                 <h3>LOGIN</h3>
             </div>
-            <div class="form-input">
-                <input type="text" required>
-                <span></span>
-                <label for="">Matricule</label>
-            </div>
-            <div class="form-input">
-                <input type="password" required>
-                <span></span>
-                <label for="">Password</label>
-            </div>
-            <div class="form-input">
-                <button type="submit" class="btn btn-warning">Login</button>
-            </div>
-            <div class="form-input">
-                <p>Don't Have an account ? <a href="{% url 'signup' %}" class="link-warning">create one here</a></p>
+            <div class="login-section">
+                <div class="form-input">
+                    <input type="text" autocomplete="none"  name="matricule" required>
+                    <span></span>
+                    <label for="">Matricule</label>
+                </div>
+                <div class="form-input">
+                    <input type="password" autocomplete="none"  name="password" required>
+                    <span></span>
+                    <label for="">Password</label>
+                </div>
+                <div class="form-input">
+                    <button type="submit" class="btn btn-warning">Login</button>
+                </div>
+                <div class="form-input">
+                    <p>Don't Have an account ? <a href="{% url 'signup' %}" class="link-warning">create one here</a></p>
+                </div>
+
             </div>
         </form>
     </div>

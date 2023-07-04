@@ -1,34 +1,37 @@
-{% extends 'pages/base.html' %}
+{% extends 'pages/ENSPD/base.html' %}
 {% load static %}
 
 {% block main %}
 <div class="container">
     <div class="signup-form-container">
         <form action="" method="POST">
-            {% csrf_token %}
+            <div class="title-section">
+                <h3>Signup</h3>
+            </div>
             <div class="user-section">
+                {% csrf_token %}
                 <div class="form-input">
-                    <input type="text" required id="first_name">
+                    <input type="text" autocomplete="none" required id="first_name" name="first_name">
                     <span></span>
                     <label for="">First Name</label>
                 </div>
                 <div class="form-input">
-                    <input type="text" required id="last_name">
+                    <input type="text" required autocomplete="none"  id="last_name" name="last_name">
                     <span></span>
                     <label for="">Last Name</label>
                 </div>
                 <div class="form-input">
-                    <input type="text" required id="matricule">
+                    <input type="text" required autocomplete="none"  id="matricule" name="matricule">
                     <span></span>
                     <label for="">Matricule</label>
                 </div>
                 <div class="form-input">
-                    <input type="password" required id="password">
+                    <input type="password" required autocomplete="none"  id="password" name="password">
                     <span></span>
                     <label for="">Password</label>
                 </div>
                 <div class="form-input">
-                    <button class="btn btn-primary" onclick="swapFormTo(2)">Next &gt;&gt;</button>
+                    <a class="btn btn-primary" onclick="swapFormTo(event, 2)">Next &gt;&gt;</a>
                 </div>
                 <div class="form-input">
                     <p>Already Have an account ? <a href="{% url 'login' %}" class="link-warning">Log In here</a></p>
@@ -36,7 +39,7 @@
             </div>
             <div class="profile-section">
                 <div class="form-input">
-                    <input type="text" required id="cycle" onfocus="showOptions(event)">
+                    <input type="text" required autocomplete="none"  id="cycle"  name="cycle" onfocus="showOptions(event)">
                     <ul class="options">
                         <li onclick="setInputValue(event, 'Engineering')">Engineering</li>
                         <li onclick="setInputValue(event, 'Science of engineering')">Science of engineering</li>
@@ -45,7 +48,7 @@
                     <label for="">Cycle</label>
                 </div>
                 <div class="form-input">
-                    <input type="text" required id="level" onfocus="showOptions(event)">
+                    <input type="text" required autocomplete="none"  id="level" name="level" onfocus="showOptions(event)">
                     <ul class="options">
                         <li onclick="setInputValue(event, 'Level 1')">Level 1</li>
                         <li onclick="setInputValue(event, 'Level 2')">Level 2</li>
@@ -58,7 +61,7 @@
                     
                 </div>
                 <div class="form-input">
-                    <input type="text" required id="field" onfocus="showOptions(event)">
+                    <input type="text" required autocomplete="none"  id="field" name="field" onfocus="showOptions(event)">
                     <ul class="options">
                         {% for field in fields %}
                         <li onclick="setInputValue(event, '{{ field }}')">{{ field }}</li>
@@ -68,7 +71,7 @@
                     <label for="">Field</label>
                 </div>
                 <div class="form-input">
-                    <button class="btn btn-secondary" onclick="swapFormTo(1)"> &lt;&lt; previous </button>
+                    <a class="btn btn-secondary" onclick="swapFormTo(event, 1)"> &lt;&lt; previous </a>
                 </div>
                 <div class="form-input">
                     <button type="submit" class="btn btn-warning">Signup</button>
@@ -86,13 +89,22 @@
 
 {% block script %}
     <script>
-        function swapFormTo(sectionIndex) {
+        function swapFormTo(event, sectionIndex) {
+            event.preventDefault()
+            let valid = true
+            let inputList = event.currentTarget.parentNode.parentNode.querySelectorAll('input')
+            inputList.forEach(item => {
+                if (item.value == '') {
+                    valid = false
+                }
+            })
+    
             if (sectionIndex == 1) {
                 let prevSection = document.querySelector('.profile-section')
                 let nextSection = document.querySelector('.user-section')
                 nextSection.style.left = '50%'
                 prevSection.style.left = '150%'
-            } else {
+            } else if (sectionIndex == 2 && valid == true) {
                 let prevSection = document.querySelector('.user-section')
                 let nextSection = document.querySelector('.profile-section')
                 nextSection.style.left = '50%'

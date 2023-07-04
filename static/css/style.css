@@ -4,12 +4,18 @@
     --giants-orange: #FF5714;
     --yellow: #E0FF4F;
     --green: #14591D;
+    --golden-orange: #c0a452;
+
+    --containers-top: 8vh;
+}
+
+body {
+    overflow-x: hidden;
 }
 
 a {
     text-decoration: none;
 }
-
 
 /* sizes the logo on the navbar */
 .navbar {
@@ -58,6 +64,11 @@ a {
     color: white;
 }
 
+/* set the calendar button to hidden for normal screen size */
+#calendar-button {
+    display: none;
+}
+
 /* size the images on the carousel */
 .carousel-item img {
     width: 100%;
@@ -97,13 +108,33 @@ a {
 
 /*--------------------------------- Forms --------------------------*/
 .login-form-container,
-.signup-form-container {
+.signup-form-container,
+.edit-profile-form-container {
     top: 20vh;
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.messages {
+    list-style: none;
+    width: 40%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    background-color: #db6262;
+    border: 2px solid #cf2828;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    width: fit-content;
 }
 
 .login-form-container form,
@@ -120,9 +151,6 @@ a {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-
-    -webkit-box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
-    -moz-box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
     box-shadow: 7px 9px 20px -8px rgba(0, 0, 0, 0.63);
 }
 
@@ -133,11 +161,12 @@ a {
 
 
 .signup-form-container form .user-section,
-.signup-form-container form .profile-section {
+.signup-form-container form .profile-section,
+.login-form-container form .login-section {
     position: absolute;
-    top: 50%;
+    top: 70px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     max-width: 400px;
     min-width: 300px;
     background-color: #21295C;
@@ -147,13 +176,27 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-
     transition: left 0.4s ease;
+}
+
+.signup-form-container form .title-section,
+.login-form-container form .title-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 69px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: white;
+    background-color: #c0a452;
 }
 
 
 .signup-form-container form .profile-section {
     left: 150%;
+    height: fit-content;
 }
 
 .form-title {
@@ -279,3 +322,474 @@ a {
     width: 100%;
     border: 2px solid #FFC107;
 }
+
+
+/* -------------------------------------------------------------- profile page styles -----------------------------------------*/
+.profile-container-wrapper {
+    position: absolute;
+    top: var(--containers-top);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    width: 100%;
+    height: 100vh;
+}
+
+.left-container {
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2em;
+}
+
+.user-profile-section,
+.general-calendar-section {
+    height: 50vh;
+    height: 50dvh;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    /* background-color: var(--pale-blue); */
+
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.69);
+    -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.69);
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.69);
+}
+
+.user-profile-section {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    background-color: #f3e7c6;
+    height: 60vh;
+}
+
+.image-section {
+    position: relative;
+    width: 100%;
+    height: 30%;
+}
+
+#user-background-picture {
+    background-color: grey;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 30px;
+}
+
+#user-profile-picture {
+    position: absolute;
+    top: 100%;
+    left: 5%;
+    transform: translateY(-50%);
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+#edit-photos-button {
+    position: absolute;
+    bottom: 10%;
+    left: 100%;
+    transform: translateX(-120%);
+}
+
+.profile-details {
+    padding: 25px 0px 5px 0px;
+    margin-left: 25%;
+    font-size: 0.9em;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0.5rem;
+    grid-auto-flow: column;
+}
+
+.day-detail-section {
+    position: relative;
+    border-left: 5px solid #c0a452;
+    background-color: #21295C;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 60vh;
+}
+
+.day-detail-section h6 {
+    position: absolute;
+    top: 5%;
+    width: max-content;
+    min-width: fit-content;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #c0a452;
+}
+
+
+.general-calendar-section {
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    height: 80vh;
+    height: 80dvh;
+}
+
+.dates-title-section {
+    background-color: var(--dark-blue);
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
+    color: white;
+}
+
+.day {
+    height: 2em;
+    width: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 0;
+}
+
+.day-title {
+    display: grid;
+    place-items: center;
+}
+
+.days-content-section {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
+    height: 100%;
+}
+
+.day-slot {
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.hour-slot {
+    position: relative;
+    border: 1px solid rgba(165, 161, 161, 0.15);
+}
+
+.slot-content {
+    position: absolute;
+    top: 100%;
+    height: 102.5%;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    font-size: 0.7rem;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.slot-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #0000004f;
+    z-index: 4;
+}
+
+.day-program.slot-content {
+    position: relative;
+    top: unset;
+    height: 40px;
+    width: 80%;
+    border-top-right-radius: none;
+    margin-bottom: 30px;
+}
+
+.hour-title {
+    position: relative;
+    border: 1px solid rgba(165, 161, 161, 0.199);
+}
+
+.hour-title span {
+    position: absolute;
+    bottom: -50%;
+    left: 0;
+    transform: translateY(-35%);
+    background-color: white;
+    width: 80%;
+    text-align: center;
+    height: fit-content;
+    z-index: 1;
+}
+
+
+.right-container {
+    position: fixed;
+    right: 0;
+    top: var(--containers-top);
+    width:33.33%;
+    height: calc(100vh - var(--containers-top));
+    padding: 2em 0em 2em 0em;
+    min-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#calendar {
+    width: 60%;
+    border-left: 2px solid transparent;
+}
+
+
+.slot-info {
+    height: 50vh;
+    height: 50dvh;
+    width: 70%;
+    background-color: #19204f;
+    border-left: 5px solid #FFC107;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 20px;
+}
+
+.android.slot-info {
+    height: 70vh;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: -100%;
+    transition: 0.3s ease;
+    z-index: 3;
+}
+
+.android.slot-info button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    border: none;
+    background-color: #FF5714;
+    color: white;
+    border-radius: 5px;
+    padding: 2.5px 15px 2.5px 15px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.android.slot-info button:hover {
+    background-color: #d2440c;
+}
+
+.info-title {
+    color: #FFC107;
+}
+
+.info-data {
+    margin-bottom: 1em;
+}
+
+.android {
+    display: none;
+}
+
+/* ---------------------------------------- edit profile section ---------------------------------------*/
+
+.edit-section {
+    margin-top: 50px;
+}
+
+.form-input img {
+    object-fit: fill;
+}
+
+
+label[for="cover-image"] {
+    width: 100%;
+}
+
+.cover-section img {
+    height: 90px;
+    width: 100%;
+}
+
+.profile-section img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.none {
+    display: none;
+}
+
+/*---------------------------------------------------------- admin dashboard ------------------------------------------------------------*/
+
+.dashboard-container {
+    position: absolute;
+    top: var(--containers-top);
+    left: 0;
+    width: 100%;
+    height: calc(100vh - var(--containers-top));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 30px 10px 30px;
+}
+
+.option-block {
+    position: relative;
+    width: 40%;
+    height: 40%;
+    margin-bottom: 10px;
+    display: flex;
+    background-color: #21295C;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.4s ease;
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.69);
+    -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.69);
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.69);
+}
+
+
+.option-block a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    color: #c0a452;
+    font-weight: 700;
+    transition: translate 0.4s ease;
+    min-width: fit-content;
+}
+
+.option-block p {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 400;
+    text-align: center;
+    opacity: 0;
+    transition: 1s ease;
+}
+
+.option-block img {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    opacity: 0;
+    transition: 0.5s ease;
+}
+
+.option-block span::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #21295cd4;
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+.option-block:hover {
+    background-color: white;
+}
+
+
+.option-block:hover a {
+    translate: 0px -50px;
+    font-size: 1.2rem;
+}
+
+.option-block:hover p {
+    opacity: 1;
+}
+
+.option-block:hover img {
+    opacity: 1;
+}
+
+.option-block:hover span::after {
+   opacity: 1;
+}
+
+@media (max-width: 920px) {
+    .android {
+        display:unset;
+    }
+
+    
+    #calendar-button {
+        display: flex;
+    }
+
+    .android.slot-info {
+        display: flex;
+    }
+
+    .right-container {
+        position: fixed;
+        top: -100%;
+    }
+
+    .left-container {
+        padding: 2px;
+        width: 100%;
+    }
+
+    .hour-title span {
+        bottom: 0;
+        transform: translateY(50%);
+        font-size: 0.5rem;
+    }
+
+    .hour-slot .slot-content {
+        font-size: 0.7rem;
+    }
+
+    .profile-container-wrapper {
+        grid-template-columns: none;
+        place-items: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .hour-slot .slot-content {
+        font-size: 0.5rem;
+    }
+
+    .day-detail-section {
+        display: none;
+    }
+
+    .profile-details {
+        font-size: 0.5rem;
+        gap: 0.1rem;
+        grid-template-rows: repeat(5, 1fr);
+        margin-left: 10px;
+    }
+
+    .user-profile-section {
+        grid-template-columns: 1fr 0fr;
+    }
+}
+

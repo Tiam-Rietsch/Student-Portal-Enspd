@@ -1,0 +1,107 @@
+{% extends 'pages/ENSPD/base.html' %}
+{% load user_extras %}
+{% load static %}
+
+{% block main %}
+<div class="container">
+    <div class="edit-profile-form-container">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="title-section">
+                <h3>EDIT PHOTOS</h3>
+            </div>
+            <div class="edit-section">
+                <div class="form-input cover-section">
+                    <input type="file" id="cover-image" name="cover-image" accept="png, jpeg, peng, jpg" onchange="loadCoverImage(event)">
+                    <img id="current-cover-image" src="{{ request.user|get_cover_photo }}" alt="">
+                    <img id="preview-cover-image" class="none" src="" alt="">
+                </div>
+                <div class="form-input profile-section">
+                    <input type="file" id="profile-picture" name="profile-picture" accept="png, jpeg, peng, jpg" onchange="loadProfilePicture(event)">
+                    <img id="current-profile-picture" src="{{ request.user|get_profile_picture }}" alt="">
+                    <img id="preview-profile-picture" class="none" src="" alt="">
+                </div>
+
+                <div class="form-input">
+                    <button type="submit" class="btn btn-warning">Change</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock main %}
+
+
+{% block script %}
+<script>
+    const compressImage = async (file, { quality = 1, type = file.type }) => {
+        const imageBitmap = await createImageBitmap(file)
+
+        const canvas = document.createElement('canvas')
+        canvas.width = imageBitmap.width
+        canvas.height = imageBitmap.height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(imageBitmap, 0, 0)
+
+        const blob = await new Promise((resolve) =>
+            canvas.toBlob(resolve, type, quality)
+        )
+
+        return new File([blob], file.name, {
+            type: blob.type,
+        })
+    }
+
+    async function loadCoverImage(event) {
+        let coverImage = document.querySelector('#cover-image').files[0]
+        if (coverImage !== null) {
+            const dataTransfer = new DataTransfer();
+            if (!coverImage.type.startsWith('image')) {
+                dataTransfer.items.add(coverImage)
+            } else {
+                const compressedFile = await compressImage(coverImage, {
+                    quality: 1,
+                    type: 'image/jpeg'
+                })
+                dataTransfer.items.add(compressedFile)
+            }
+            console.log(dataTransfer.files)
+            input = document.querySelector('#cover-image')
+            input.files = dataTransfer.files
+
+            currentImage = document.querySelector('#current-cover-image')
+            previewImage = document.querySelector('#preview-cover-image')
+            currentImage.classList.add('none')
+            previewImage.src = URL.createObjectURL(input.files[0])
+            previewImage.classList.remove('none')
+        }
+    }
+
+    async function loadProfilePicture() {
+        profileImage = document.querySelector('#profile-picture').files[0]
+        if (profileImage !== null) {
+
+            const dataTransfer = new DataTransfer();
+            if (!profileImage.type.startsWith('image')) {
+                dataTransfer.items.add(profileImage)
+            } else {
+                const compressedFile = await compressImage(profileImage, {
+                    quality: 1,
+                    type: 'image/jpeg'
+                })
+                dataTransfer.items.add(compressedFile)
+            }
+            input = document.querySelector('#profile-picture')
+            input.files = dataTransfer.files
+
+
+            currentImage = document.querySelector('#current-profile-picture')
+            previewImage = document.querySelector('#preview-profile-picture')
+            currentImage.classList.add('none')
+            previewImage.src = URL.createObjectURL(input.files[0])
+            previewImage.classList.remove('none')
+        }
+    }
+</script>
+{% endblock script%}

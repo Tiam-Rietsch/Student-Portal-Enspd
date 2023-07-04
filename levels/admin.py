@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Cycle, Level, Field, ClassGroup
-from users.admin import StudentProfileInline, StudentGroupInline
+from users.admin import StudentProfileInline, StudentInline
 
 class LevelInline(admin.TabularInline):
     model = Level
@@ -42,7 +42,7 @@ class FieldAdmin(admin.ModelAdmin):
 
 class ClassGroupAdmin(admin.ModelAdmin):
     inlines = [
-        StudentGroupInline,
+        StudentInline,
     ]
     exclude = ['class_groups']
 

@@ -1,0 +1,152 @@
+{% extends 'pages/ENSPD/base.html' %}
+{% load time_extras %}
+{% load user_extras %}
+{% load static %}
+
+{% block main %}
+<div class="profile-container-wrapper">
+    <div class="left-container">
+        <div class="user-profile-section">
+            <div class="image-section">
+                <img id="user-background-picture" src="{{ user|get_cover_photo }}" alt="">
+                <img id="user-profile-picture" src="{{ user|get_profile_picture }}" alt="">
+                <div class="profile-details">
+                    <p><b>NAME:</b>{{request.user.first_name.upper }}</p>
+                    <p><b>SURNAME:</b>   {{request.user.last_name.upper }}</p>
+                    <p><b>MATRICULE:</b> {{request.user.user_mat.upper }}</p>
+                    <p><b>CYCLE:</b>    {{request.user.student_profile.cycle.name.upper }}</p>
+                    <p><b>FIELD:</b>     {{request.user.student_profile.field.get_field_name_display.upper }}</p>
+                    <p><b>LEVEL:</b>     {{request.user.student_profile.level.name.upper }}</p>
+                    <p><b>GROUP:</b>    {{request.user.student_profile.class_group.name.upper }}</p>
+                </div>
+                <a href="{% url 'edit-profile-photos' %}" id="edit-photos-button" class="btn btn-warning">Edit</a>
+            </div>
+            <div class="day-detail-section">
+                {% for slot in day_program %}
+                        <h6>Program of the day</h6>
+                        <div class="day-program slot-content" style="background-color: #{{slot.subject.color}};">
+                            {{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="general-calendar-section">
+            {% include 'timetables/week_timetable.html' with slot_list=time_slots table=table current_date=current_date%}
+        </div>
+    </div>
+    <div class="right-container">
+        <div class="slot-info">
+            <span class="info-title">Subject Name:</span>
+            <span class="info-data name">xxxxxxx xxxxx xxxxxx</span>
+            <span class="info-title">Start:</span>
+            <span class="info-data start-time">xx:xx:xx</span>
+            <span class="info-title">End:</span>
+            <span class="info-data end-time">xx:xx:xx</span>
+            <span class="info-title">Type:</span>
+            <span class="info-data type">xxxxxxx</span>
+            <span class="info-title">Teacher:</span>
+            <span class="info-data">xx xxxxxxxxx</span>
+        </div>
+        <div class="material-theme golden" id="calendar" data-month-format="month - YYYY"></div>
+    </div>
+    <div class="android slot-info">
+        <button onclick="closeAndroidSlotInfo(event)">exit</button>
+        <span class="info-title">Subject Name:</span>
+        <span class="info-data name">xxxxxxx xxxxx xxxxxx</span>
+        <span class="info-title">Start:</span>
+        <span class="info-data start-time">xx:xx:xx</span>
+        <span class="info-title">End:</span>
+        <span class="info-data end-time">xx:xx:xx</span>
+        <span class="info-title">Type:</span>
+        <span class="info-data type">xxxxxxx</span>
+        <span class="info-title">Teacher:</span>
+        <span class="info-data">xx xxxxxxxxx</span>
+    </div>
+</div>
+{% endblock main %}
+
+{% block script %}
+<script>
+    let element = document.querySelector('#calendar')
+    var calendar = jsCalendar.new(element)
+
+    document.addEventListener('DOMContentLoaded', () => {
+        let date = new Date()
+        document.querySelectorAll('.day-title .day').forEach(element => {
+            if (element.textContent == date.getDate()) {
+                element.style.background = 'var(--golden-orange)'
+                element.style.color = 'white'
+            }
+        })
+
+        document.querySelectorAll('.slot-content').forEach(element => {
+            element.addEventListener('click', async (event) => {
+                let slotInfo = document.querySelectorAll('.slot-info')
+                let slotId = event.target.querySelector('input').value
+                console.log(slotId)
+                
+                let response = await fetch(`{% url 'get-slot-data' %}?pk=${slotId}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'getSlotData',
+                        'Content-Type': 'application/json',
+                    }
+                })
+
+                data = await response.json()
+                slotInfo.forEach(async element => {
+                    element.querySelector('.info-data.start-time').textContent = await data['start_time']
+                    element.querySelector('.info-data.end-time').textContent = await data['end_time']
+                    element.querySelector('.info-data.name').textContent = event.target.textContent
+                    element.querySelector('.info-data.type').textContent = await data['type']
+                })
+
+                document.querySelector('.android.slot-info').style.left = '0'
+
+            })
+        })
+
+        calendar.goto('{{ current_date }}')
+
+    
+    })
+
+
+
+    calendar.onDateClick(async (event, date) => {
+        event.target.parentNode.parentNode.querySelectorAll('td').forEach(element => {
+            element.style.border = "none"
+        })
+        event.target.style.border = "1px solid gray"
+
+        let selectedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+        console.log(selectedDate)
+        window.location.assign(`{% url 'get-calendar' %}?selDate=${selectedDate}`)
+    })
+
+    function closeAndroidSlotInfo(event) {
+        event.target.parentElement.style.left = '-100%'
+    }
+
+    function showCalendar() {
+        let cal = document.querySelector('#calendar')
+        cal.style.position = 'fixed'
+        cal.style.display = 'flex'
+        cal.style.top = '50%'
+        cal.style.left = '50%'
+        cal.style.zIndex = '1000'
+        cal.style.transform = 'translate(-50%, -50%)'
+        cal.focus()
+
+        cal.addEventListener('blur', (event) => {
+            event.target.style.display = 'none'
+            event.target.style.position = 'relative'
+            event.target.style.top = 'unset'
+            event.target.style.left = 'unset'
+            event.target.style.transform = 'unset'    
+            console.log('blurry')      
+        })
+    }
+</script>
+{% endblock script %}

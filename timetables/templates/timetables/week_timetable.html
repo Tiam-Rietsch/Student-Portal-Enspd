@@ -1,0 +1,165 @@
+{% load time_extras %}
+
+
+    <div class="dates-title-section">
+        <div class="day-title flex-column">
+            <span>program of</span>
+            <span>{{current_date}}</span>
+        </div>
+        <div class="day-title">
+            <span>Mon</span>
+            <span class="day">{{table.id|get_date:0}}</span>
+        </div>
+        <div class="day-title">
+            <span>Tue</span>
+            <span class="day">{{table.id|get_date:1}}</span>
+        </div>
+        <div class="day-title">
+            <span>Wed</span>
+            <span class="day">{{table.id|get_date:2}}</span>
+        </div>
+        <div class="day-title">
+            <span>Thu</span>
+            <span class="day">{{table.id|get_date:3}}</span>
+        </div>
+        <div class="day-title">
+            <span>Fri</span>
+            <span class="day">{{table.id|get_date:4}}</span>
+        </div>
+        <div class="day-title">
+            <span>Sat</span>
+            <span class="day">{{table.id|get_date:5}}</span>
+        </div>
+        <div class="day-title">
+            <span>Sun</span>
+            <span class="day">{{table.id|get_date:6}}</span>
+        </div>
+    </div>
+    <div class="days-content-section">
+        <div class="day-slot">
+            {% for day in 1|range:11 %}
+            <div class="hour-title">
+                <span>{{ forloop.counter|get_time }}</span>
+            </div>
+            {% endfor %}
+            <div class="hour-title">
+
+            </div>
+        </div>
+        <div class="day-slot monday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"MON" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="day-slot tuesday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"TUE" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+
+            </div>
+            {% endfor %}
+        </div>
+        <div class="day-slot wednesday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"WED" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="day-slot thursday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"THU" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+
+            </div>
+            {% endfor %}
+        </div>
+        <div class="day-slot friday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"FRI" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="day-slot saturday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"SAT" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="day-slot sunday">
+            {% for day in 1|range:12 %}
+            <div class="hour-slot">
+
+                {% with index=forloop.counter %}
+                    {% for slot in slot_list|filter_day:"SUN" %}
+                        {% if slot.id|get_start_period:index < 1 %}
+                        <div class="slot-content"
+                            style="background-color: #{{slot.subject.color}}; height:calc({{slot.id|get_total_hours}}*102.5%); top:calc(100% + {{slot.id|get_start_period:index }}*100%)">{{ slot.subject.name }}
+                            <input style="display: none;" value="{{ slot.id }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>

@@ -41,7 +41,6 @@ class Field(models.Model):
         return self.get_field_name_display()
     
 
-
 class ClassGroup(models.Model):
     name = models.CharField(max_length=100)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)

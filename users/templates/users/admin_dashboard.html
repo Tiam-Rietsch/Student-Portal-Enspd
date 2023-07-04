@@ -1,0 +1,19 @@
+{% extends 'pages/ENSPD/base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="dashboard-container">
+    <div class="option-block edit-time-table">
+        <img src="{% static 'img/timetable_planning.png' %}" alt="">
+        <span></span>
+        <a href="{% url 'admin:index' %}timetables/">EMPLOIE DE TEMPS</a>
+        <p>ICI vous pouvez <b>modifier le programme</b> d'un groupe ou d'une class, ou encore <b>creer un emploie de temp</b> pour une classe</p>
+    </div>
+    <div class="option-block send-notification">
+        <img src="{% static 'img/Notifications.jpg' %}" alt="">
+        <span></span>
+        <a href="">MESSAGES ET NOTIFICATIONS</a>
+        <p>Ici vous pouvez envoyer des notifications <b>generales</b> ou des convocation <b>ciblee</b> au etudiants</p>
+    </div>
+</div>
+{% endblock main %}
