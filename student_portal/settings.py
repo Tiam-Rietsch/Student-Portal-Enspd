@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'levels.apps.LevelsConfig',
     'timetables.apps.TimetablesConfig',
+    'notifications.apps.NotificationsConfig',
 ]
 
 MIDDLEWARE = [

@@ -24,7 +24,8 @@ urlpatterns = [
 
     # project urls
     path('', include('pages.urls')),
-    path('accounts/', include('users.urls'))
+    path('accounts/', include('users.urls')),
+    path('notifications/', include('notifications.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,204 @@
+{% extends 'pages/ENSPD/base.html' %}
+
+
+{% block main %}
+<div class="notice-container">
+    <section class="input-section">
+        <textarea class="textarea" placeholder="Enter a message ...."></textarea>
+
+        <form class="send-notice-form" action="" method="POST">
+            {% csrf_token %}
+            <div class="notice-form-input">
+                <label for="cycles">Cycle(s):</label>
+                <select name="cycles" id="cycles" multiple>
+                    <option selected value="All">All</option>
+                    {% for cycle in cycles %}
+                    <option value="{{ cycle.name }}">{{ cycle.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="notice-form-input">
+                <label for="levels">Level(s):</label>
+                <select name="levels" id="levels" multiple>
+                    <option selected value="All">All</option>
+                    <option value="LEVEL 1">LEVEL 1</option>
+                    <option value="LEVEL 2">LEVEL 2</option>
+                    <option value="LEVEL 3">LEVEL 3</option>
+                    <option value="LEVEL 4">LEVEL 4</option>
+                    <option value="LEVEL 5">LEVEL 5</option>
+                </select>
+            </div>
+            <div class="notice-form-input">
+                <label for="fields">Field(s):</label>
+                <select name="fields" id="fields" multiple>
+                    <option selected value="All">All</option>
+                    {% for field in fields %}
+                    <option value="{{ field.get_field_name_display.upper }}">{{ field.get_field_name_display.upper }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="notice-form-input">
+                <label for="class-groups">Class Group(s):</label>
+                <select name="class-groups" id="class-groups" multiple>
+                    <option selected value="All">All</option>
+                    <option value="GROUP 1">GROUP 1</option>
+                    <option value="GROUP 2">GROUP 2</option>
+                    <option value="GROUP 3">GROUP 3</option>
+                    <option value="GROUP 4">GROUP 4</option>
+                    <option value="GROUP 5">GROUP 5</option>
+                    <option value="GROUP 6">GROUP 6</option>
+                    <option value="GROUP 7">GROUP 7</option>
+                    <option value="GROUP 8">GROUP 8</option>
+                    <option value="GROUP 9">GROUP 9</option>
+                    <option value="GROUP 10">GROUP 10</option>
+                </select>
+            </div>
+            <div class="notice-form-input">
+                <label for="matricules">Matricule(s):</label>
+                <select name="matricules" id="matricules" multiple>
+                    <option selected value="All">All</option>
+                    {% for student in users %}
+                    <option value="{{ student.user_mat }}">{{ student.user_mat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="notice-form-input">
+                <label for="names">Name(s):</label>
+                <select name="names" id="names" multiple>
+                    <option selected value="All">All</option>
+                    {% for student in users %}
+                    <option value="{{ student.first_name }} {{ student.last_name }}">{{ student.first_name }} {{ student.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <select style="display: none;" name="selected-mat" id="selected-mat" multiple>
+
+            </select>
+            <textarea name="notice-message" id="notice-message" style="display: none"></textarea>
+            <button type="submit" style="display: none" id="submit-button"></button>
+        </form>
+    </section>
+
+
+
+    <section class="table-section">
+        <div class="button-actions">
+            <button class="btn btn-outline-warning" onclick="submitForm()">Envoyer</button>
+            <a class="btn btn-secondary" href="{% url 'dashboard' %}">Go Back</a>
+        </div>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>MATRICULE</th>
+                    <th>NAME AND SURNAME</th>
+                    <th>CYCLE</th>
+                    <th>LEVEL</th>
+                    <th>FIELD</th>
+                    <th>CLASS GROUP</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in users %}
+                <tr>
+                    <td class="mat">{{ student.user_mat }}</td>
+                    <td class="name">{{ student.first_name }} {{ student.last_name }}</td>
+                    <td class="cycle">{{ student.student_profile.cycle.name  }}</td>
+                    <td class="level">{{ student.student_profile.level.name }}</td>
+                    <td class="field">{{ student.student_profile.field.get_field_name_display }}</td>
+                    <td class="group">{{ student.student_profile.class_group.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+    function submitForm() {
+        document.querySelector('#notice-message').value = document.querySelector('.textarea').value
+        document.querySelectorAll('.content-table tbody tr:not(.none) td.mat').forEach(matElement => {
+            let option = document.createElement('option')
+            option.textContent = matElement.textContent
+            option.value = matElement.textContent
+            option.selected = true
+            document.querySelector('#selected-mat').appendChild(option)
+        })
+        document.querySelector('#submit-button').click()
+    }
+
+    function changeTableSelections(values) {
+        let selectedCycles = [...document.querySelector('select#cycles').selectedOptions].map(option => option.value.toUpperCase())
+        let selectedLevels = [...document.querySelector('select#levels').selectedOptions].map(option => option.value.toUpperCase())
+        let selectedFields = [...document.querySelector('select#fields').selectedOptions].map(option => option.value.toUpperCase())
+        let selectedGroups = [...document.querySelector('select#class-groups').selectedOptions].map(option => option.value.toUpperCase())
+        let selectedMatricules = [...document.querySelector('select#matricules').selectedOptions].map(option => option.value.toUpperCase())
+        let selectedNames = [...document.querySelector('select#names').selectedOptions].map(option => option.value.toUpperCase())
+
+        document.querySelectorAll('.content-table tbody tr').forEach(row => {
+            let mat = row.querySelector('.mat').textContent.toUpperCase()
+            let name = row.querySelector('.name').textContent.toUpperCase()
+            let cycle = row.querySelector('.cycle').textContent.toUpperCase()
+            let level = row.querySelector('.level').textContent.toUpperCase()
+            let field = row.querySelector('.field').textContent.toUpperCase()
+            let group = row.querySelector('.group').textContent.toUpperCase()
+
+            console.log(group)
+
+            if (((selectedMatricules.includes(mat)) || (selectedMatricules.includes('ALL'))) &&
+                ((selectedNames.includes(name)) || (selectedNames.includes('ALL'))) &&
+                ((selectedCycles.includes(cycle)) || (selectedCycles.includes('ALL'))) && 
+                ((selectedLevels.includes(level)) || (selectedLevels.includes('ALL'))) &&
+                ((selectedFields.includes(field)) || (selectedFields.includes('ALL'))) &&
+                ((selectedGroups.includes(group)) || (selectedGroups.includes('ALL')))) 
+            {
+                row.classList.remove('none')
+            } 
+            else 
+            {
+                row.classList.add('none')
+            }
+        })
+    }
+
+    new MultiSelectTag('cycles', {
+        rounded: true,
+        onChange: (values) => {
+            changeTableSelections()         
+        }
+    })
+    new MultiSelectTag('levels', {
+        rounded: true,
+        onChange:  (values) => {
+            changeTableSelections()
+        }
+    })
+    new MultiSelectTag('fields', {
+        rounded: true,
+        onChange:  (values) => {
+            changeTableSelections()
+        }
+    })
+    new MultiSelectTag('class-groups', {
+        rounded: true,
+        onChange:  (values) => {
+            changeTableSelections()
+        }
+    })
+    new MultiSelectTag('matricules', {
+        rounded: true,
+        onChange:  (values) => {
+            changeTableSelections()
+        }
+    })
+    new MultiSelectTag('names', {
+        rounded: true,
+        onChange:  (values) => {
+            changeTableSelections()
+        }
+    })
+</script>
+{% endblock script %}

@@ -1,0 +1,20 @@
+{% extends 'pages/ENSPD/base.html' %}
+
+
+{% block main %}
+<div class="received-note-container">
+    {% for notice in notifications %}
+    <div class="card">
+        <div class="card-header">
+            NOTICE | {{ notice.date_created }}
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>{{ notice.body }}</p>
+                <footer class="blockquote-footer">{{ notice.reciever.first_name }} {{ notice.receiver.last_name }}</footer>
+            </blockquote>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock main %}
